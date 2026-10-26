@@ -1,0 +1,43 @@
+# Render Blueprint: the two SimpliEarn APIs on Render's free plan.
+# Render → New → Blueprint → pick this repo. Values marked `sync: false` are asked for once.
+services:
+  - type: web
+    name: simpliearn-backend
+    runtime: python
+    plan: free
+    buildCommand: pip install -r RAG/requirements-api.txt
+    startCommand: cd RAG && uvicorn api_chatbot:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /docs
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: STRICT_CONFIG
+        value: "1"
+      # The Vercel site's URL, so browsers may call this API (comma-separated for several)
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://simpli-earn-deploy.vercel.app
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+
+  - type: web
+    name: simpliearn-sentiment
+    runtime: python
+    plan: free
+    buildCommand: pip install -r sentiment/requirements-api.txt
+    startCommand: cd sentiment && uvicorn api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /docs
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: STRICT_CONFIG
+        value: "1"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
