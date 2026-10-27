@@ -81,7 +81,7 @@ const NavBar = () => {
           <div className="hidden flex-nowrap items-center gap-3 md:flex">
             {user ? (
               <>
-                <Link href="/my-dashboard" className="btn-primary no-underline">
+                <Link href="/#my-dashboard" className="btn-primary no-underline">
                   My Dashboard
                 </Link>
                 <Link
@@ -121,7 +121,7 @@ const NavBar = () => {
           {!authLoading &&
             (user ? (
               <>
-                <Link href="/my-dashboard" className="btn-primary no-underline">
+                <Link href="/#my-dashboard" className="btn-primary no-underline">
                   My Dashboard
                 </Link>
                 <Link href="/settings" className="font-normal text-foreground no-underline hover:text-brand">

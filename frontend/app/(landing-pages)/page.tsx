@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import { API_BASE_URL, SENTIMENT_API_BASE_URL } from "@/lib/api-config";
 import { apiFetch } from "@/lib/api-fetch";
 import { createClient } from "@/lib/supabase/client";
+import { useAuth } from "@/lib/auth/AuthContext";
+import MyDashboardSection from "@/components/my-dashboard/MyDashboardSection";
 
 // Creating dashboards from new YouTube links needs the download step to run off data-center IPs
 // (YouTube blocks them). Until that is in place the form is shown as coming soon; set
@@ -42,6 +44,7 @@ export default function Home() {
   const [libraryVideos, setLibraryVideos] = useState<LibraryVideo[]>([]);
   const [hoveredVideoId, setHoveredVideoId] = useState<string | null>(null);
   const router = useRouter();
+  const { user } = useAuth();
   // Load library videos from database
   useEffect(() => {
     const fetchLibrary = async () => {
@@ -285,9 +288,19 @@ export default function Home() {
             })}
           </div>
           <p className="mt-4 w-full text-sm text-muted-foreground">
-            <em>Click a video card above. Hover to delete custom uploads.</em>
+            <em>
+              {NEW_VIDEOS_ENABLED
+                ? "Click a video card above. Hover to delete custom uploads."
+                : "Click a call above to open its dashboard."}
+            </em>
           </p>
         </div>
+        {user && (
+          <>
+            <hr className="my-7 h-px w-full border-none bg-white/8" />
+            <MyDashboardSection userId={user.id} />
+          </>
+        )}
       </main>
     </div>
   );
