@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, Search, Send, Trash2 } from "lucide-react";
+import { ChevronDown, MousePointerClick, Search, Send, Trash2 } from "lucide-react";
 import mockCalls from "@/public/data/mock-calls.json";
 
 import { useState, useEffect } from "react";
@@ -225,9 +225,25 @@ export default function Home() {
               const formattedDate = new Date(call.date).toLocaleDateString(
                 "en-US"
               );
+              // The Apple call is the suggested first stop for new visitors
+              const isStarter = call.symbol === "AAPL";
               return (
-                <Link key={call.id} href={`/dashboard/?id=${call.id}`}>
-                  <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-left transition-colors hover:bg-white/5">
+                <Link key={call.id} href={`/dashboard/?id=${call.id}`} className="relative block">
+                  {isStarter && (
+                    <span className="absolute -top-3 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-brand px-3 py-1 text-xs font-medium text-black shadow-lg">
+                      <span className="relative flex size-2">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/60" />
+                        <span className="relative inline-flex size-2 rounded-full bg-black" />
+                      </span>
+                      Click here to get started
+                      <MousePointerClick className="size-3.5" />
+                    </span>
+                  )}
+                  <div
+                    className={`rounded-2xl border bg-black/20 p-3 text-left transition-colors hover:bg-white/5 ${
+                      isStarter ? "border-brand/70 shadow-[0_0_24px_-6px] shadow-brand/50" : "border-white/8"
+                    }`}
+                  >
                     <Image
                       src={call.image}
                       alt={`${call.company} Thumbnail`}
