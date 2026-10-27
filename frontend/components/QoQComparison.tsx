@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "@/lib/api-config";
+import { apiFetch } from "@/lib/api-fetch";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -110,7 +111,7 @@ export default function QoQComparison({ currentId, compareId, setCompareId }: Qo
     let cancelled = false;
     const fetchComparison = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/compare`, {
+        const res = await apiFetch(`${API_BASE_URL}/compare`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

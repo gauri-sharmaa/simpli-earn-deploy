@@ -96,7 +96,7 @@ export default function OnboardingPage() {
       return
     }
 
-    router.push('/my-dashboard')
+    router.push('/')
     setSubmitting(false)
   }
 

@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useLayoutEffect, useRef, useState 
 import Message from "./Message";
 import { useSearchParams } from "next/navigation";
 import { API_BASE_URL } from "@/lib/api-config";
+import { apiFetch } from "@/lib/api-fetch";
 import { historyFor, MAX_QUESTION_CHARS, nextMessageId, type ChatMessage } from "@/lib/chat-history";
 
 export type Message = ChatMessage;
@@ -44,7 +45,7 @@ export default function ChatBot({
     const questionId = nextMessageId();
     setMessages((prev) => [...prev, { id: questionId, sender: "user", text, source }]);
     try {
-      const res = await fetch(`${API_BASE_URL}/chat`, {
+      const res = await apiFetch(`${API_BASE_URL}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

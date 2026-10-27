@@ -1,6 +1,6 @@
 import type { SupabaseClient, User } from '@supabase/supabase-js'
 
-export const DEFAULT_AFTER_LOGIN = '/my-dashboard'
+export const DEFAULT_AFTER_LOGIN = '/'
 
 /** Only same-site paths, so `?next=` can't send a signed-in user to another origin. */
 export function safeNext(next: string | null | undefined): string {

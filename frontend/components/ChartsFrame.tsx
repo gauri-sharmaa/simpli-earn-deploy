@@ -7,6 +7,7 @@ import EconomicIndicatorsChart from "./EconomicIndicatorsChart";
 import QoQComparison from "./QoQComparison";
 import { useSearchParams } from "next/navigation";
 import { API_BASE_URL, SENTIMENT_API_BASE_URL } from "@/lib/api-config";
+import { apiFetch } from "@/lib/api-fetch";
 import type { RedFlag } from "./SentimentGraph";
 
 // Dashboard configurations - now only for ticker and date
@@ -103,7 +104,7 @@ export default function ChartsFrame({ onTimestampClick, pipeline = null }: Chart
   useEffect(() => {
     if (!videoInfoKey || !videoUrlParam) return;
     let cancelled = false;
-    fetch(`${API_BASE_URL}/video-info?video_url=${encodeURIComponent(videoUrlParam)}`)
+    apiFetch(`${API_BASE_URL}/video-info?video_url=${encodeURIComponent(videoUrlParam)}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => { if (!cancelled) setVideoInfoResult({ key: videoInfoKey, info: data }); })
       .catch(() => { if (!cancelled) setVideoInfoResult({ key: videoInfoKey, info: null }); });
@@ -156,7 +157,7 @@ export default function ChartsFrame({ onTimestampClick, pipeline = null }: Chart
         const videoUrl = searchParams.get("video_url");
 
         // Use the new endpoint that looks up data from the database
-        const response = await fetch(`${SENTIMENT_API_BASE_URL}/sentiment/get-by-video`, {
+        const response = await apiFetch(`${SENTIMENT_API_BASE_URL}/sentiment/get-by-video`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -210,7 +211,7 @@ export default function ChartsFrame({ onTimestampClick, pipeline = null }: Chart
   useEffect(() => {
     if (!redFlagsKey) return;
     let cancelled = false;
-    fetch(`${API_BASE_URL}/red-flags`, {
+    apiFetch(`${API_BASE_URL}/red-flags`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

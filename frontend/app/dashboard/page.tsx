@@ -12,6 +12,7 @@ import type { Message } from "@/components/ChatBot";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { chatForAccount, startChat, updateMessages, type AccountChat } from "@/lib/account-chat";
 import { API_BASE_URL } from "@/lib/api-config";
+import { apiFetch } from "@/lib/api-fetch";
 import { MOTION_EASING, MOTION_MS, prefersReducedMotion } from "@/lib/motion";
 
 type SummarySection = {
@@ -67,7 +68,7 @@ function DashboardContent() {
 
     const poll = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/dashboard/job-status/${encodeURIComponent(jobId)}`);
+        const res = await apiFetch(`${API_BASE_URL}/dashboard/job-status/${encodeURIComponent(jobId)}`);
         if (cancelled) return;
         // 404: API restarted and forgot the in-memory job; just try loading whatever exists
         if (res.status === 404) return finish();
@@ -104,13 +105,13 @@ function DashboardContent() {
       try {
         let res;
         if (videoUrl) {
-          res = await fetch(`${API_BASE_URL}/summary`, {
+          res = await apiFetch(`${API_BASE_URL}/summary`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ video_url: videoUrl }),
           });
         } else {
-          res = await fetch(`${API_BASE_URL}/summary?id=${id || "1"}`);
+          res = await apiFetch(`${API_BASE_URL}/summary?id=${id || "1"}`);
         }
 
         let data: { summary?: string; detail?: string; sections?: SummarySection[] };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { API_BASE_URL } from '@/lib/api-config';
+import { apiFetch } from '@/lib/api-fetch';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Chart, TooltipItem } from 'chart.js';
 
@@ -92,7 +93,7 @@ const EconomicIndicatorsChart: React.FC<EconomicIndicatorsChartProps> = ({
     let cancelled = false;
     const fetchIndicatorsData = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/generate-indicators`, {
+        const response = await apiFetch(`${API_BASE_URL}/generate-indicators`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

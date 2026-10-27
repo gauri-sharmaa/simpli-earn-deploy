@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Footer from "../components/Footer";
 import ScrollToTop from "../components/ScrollToTop";
+import BackendWarmup from "../components/BackendWarmup";
 import { AuthProvider } from "@/lib/auth/AuthContext";
 
 const urbanist = Urbanist({
@@ -30,6 +31,7 @@ export default function RootLayout({
             {children}
             <Footer />
             <ScrollToTop />
+            <BackendWarmup />
           </div>
           <Analytics />
         </AuthProvider>

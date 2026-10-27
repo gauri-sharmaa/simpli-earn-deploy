@@ -8,6 +8,7 @@ import mockCalls from "@/public/data/mock-calls.json";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { API_BASE_URL, SENTIMENT_API_BASE_URL } from "@/lib/api-config";
+import { apiFetch } from "@/lib/api-fetch";
 import { createClient } from "@/lib/supabase/client";
 
 // Creating dashboards from new YouTube links needs the download step to run off data-center IPs
@@ -45,14 +46,16 @@ export default function Home() {
   useEffect(() => {
     const fetchLibrary = async () => {
       try {
-        const response = await fetch(`${SENTIMENT_API_BASE_URL}/library`);
+        const response = await apiFetch(`${SENTIMENT_API_BASE_URL}/library`);
         const data = await response.json();
         setLibraryVideos(data.videos || []);
       } catch (error) {
         console.error("Failed to load library:", error);
       }
     };
-    fetchLibrary();
+    // Calls added from links are listed only while adding new links is enabled; until then the
+    // library shows just the demo calls
+    if (NEW_VIDEOS_ENABLED) fetchLibrary();
   }, []);
 
   const handleSubmit = async (e: React.MouseEvent) => {
